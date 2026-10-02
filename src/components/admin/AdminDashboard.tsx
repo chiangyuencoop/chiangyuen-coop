@@ -115,9 +115,9 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
     setLocalInquiries(inquiries);
   }, [inquiries]);
 
-  // Login form states
-  const [emailInput, setEmailInput] = useState('admin@chiangyuen-coop.com');
-  const [passwordInput, setPasswordInput] = useState('admin1234');
+  // Login form states (ว่างไว้ ไม่ให้ติดค้าง)
+  const [emailInput, setEmailInput] = useState('');
+  const [passwordInput, setPasswordInput] = useState('');
   const [loginError, setLoginError] = useState<string | null>(null);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
 
@@ -528,6 +528,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   required
                   value={emailInput}
                   onChange={(e) => setEmailInput(e.target.value)}
+                  placeholder="กรอกอีเมลเจ้าหน้าที่"
                   className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#005B35]"
                 />
               </div>
@@ -541,6 +542,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   required
                   value={passwordInput}
                   onChange={(e) => setPasswordInput(e.target.value)}
+                  placeholder="กรอกรหัสผ่าน"
                   className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#005B35]"
                 />
               </div>
@@ -553,8 +555,6 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 {isLoggingIn ? 'กำลังตรวจสอบ...' : 'เข้าสู่ระบบ'}
               </button>
             </form>
-
-          
           </div>
         ) : (
           /* LOGGED IN: TABBED ADMIN INTERFACE */
@@ -1426,7 +1426,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                       <option value="rice">เมล็ดพันธุ์ข้าวปลุก</option>
                       <option value="fertilizer">ปุ๋ยและยาเกษตร</option>
                       <option value="processed">ผลิตภัณฑ์สหกรณ์</option>
-                                          </select>
+                    </select>
                   </div>
 
                   <div>
