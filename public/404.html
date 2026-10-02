@@ -1,15 +1,35 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="th">
   <head>
-    <meta charset="utf-8" />
-    <title>สหกรณ์การเกษตรเชียงยืน จำกัด</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>สหกรณ์การเกษตรเชียงยืน จำกัด - Chiang Yuen Agricultural Cooperative</title>
+    <meta name="description" content="เว็บไซต์ทางการและระบบจัดการ สหกรณ์การเกษตรเชียงยืน จำกัด อำเภอเชียงยืน จังหวัดมหาสารคาม เคียงข้างเกษตรกร มุ่งมั่นพัฒนา สร้างสรรค์ความยั่งยืน" />
+    <meta property="og:title" content="สหกรณ์การเกษตรเชียงยืน จำกัด - Chiang Yuen Agricultural Cooperative" />
+    <meta property="og:description" content="เว็บไซต์ทางการและระบบจัดการ สหกรณ์การเกษตรเชียงยืน จำกัด อำเภอเชียงยืน จังหวัดมหาสารคาม เคียงข้างเกษตรกร มุ่งมั่นพัฒนา สร้างสรรค์ความยั่งยืน" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" type="image/png" href="/chiangyuen-coop/logo.png" />
+    <link rel="apple-touch-icon" href="/chiangyuen-coop/logo.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Sarabun:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
     <script>
-      // SPA redirect for GitHub Pages
+      // Single Page Application redirect script for GitHub Pages
       var path = window.location.pathname;
-      window.location.replace('/chiangyuen-coop/');
+      if (path && path !== '/chiangyuen-coop/' && path !== '/chiangyuen-coop') {
+        window.location.replace('/chiangyuen-coop/');
+      }
     </script>
   </head>
-  <body>
-    <p>กำลังนำทางไปยังหน้าหลัก สหกรณ์การเกษตรเชียงยืน จำกัด...</p>
+  <body class="font-sans antialiased bg-gray-50 text-slate-800">
+    <div id="root">
+      <div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; font-family: sans-serif; text-align: center; padding: 20px;">
+        <div>
+          <h2 style="color: #005B35; font-size: 22px; font-weight: bold;">สหกรณ์การเกษตรเชียงยืน จำกัด</h2>
+          <p style="color: #666; margin-top: 8px;">กำลังนำท่านเข้าสู่หน้าหลักของเว็บไซต์...</p>
+        </div>
+      </div>
+    </div>
   </body>
 </html>

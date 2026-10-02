@@ -1,13 +1,28 @@
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
+import fs from 'fs';
 import {defineConfig} from 'vite';
+
+// Plugin to ensure dist/404.html is an exact copy of dist/index.html for GitHub Pages SPA routing
+function copyIndexTo404Plugin() {
+  return {
+    name: 'copy-index-to-404',
+    closeBundle() {
+      const distIndex = path.resolve(__dirname, 'dist/index.html');
+      const dist404 = path.resolve(__dirname, 'dist/404.html');
+      if (fs.existsSync(distIndex)) {
+        fs.copyFileSync(distIndex, dist404);
+      }
+    },
+  };
+}
 
 export default defineConfig(({ command }) => {
   return {
     // กำหนด base path สำหรับ GitHub Pages (Repository: chiangyuen-coop)
     base: command === 'build' ? '/chiangyuen-coop/' : '/',
-    plugins: [react(), tailwindcss()],
+    plugins: [react(), tailwindcss(), copyIndexTo404Plugin()],
     resolve: {
       alias: {
         '@': path.resolve(__dirname, '.'),
