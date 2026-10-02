@@ -11,6 +11,7 @@ import {
   Tag,
   Eye,
   X,
+  ChevronDown,
 } from 'lucide-react';
 
 interface ProductsShowcaseProps {
@@ -25,14 +26,24 @@ export const ProductsShowcase: React.FC<ProductsShowcaseProps> = ({
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [visibleCount, setVisibleCount] = useState<number>(8);
 
   const categories = [
     { id: 'all', label: 'สินค้าทั้งหมด' },
     { id: 'rice', label: 'เมล็ดพันธุ์ข้าวปลุก' },
     { id: 'fertilizer', label: 'ปุ๋ยและยาเกษตร' },
     { id: 'processed', label: 'ผลิตภัณฑ์สหกรณ์' },
-    
   ];
+
+  const handleCategoryChange = (catId: string) => {
+    setSelectedCategory(catId);
+    setVisibleCount(8);
+  };
+
+  const handleSearchChange = (val: string) => {
+    setSearchQuery(val);
+    setVisibleCount(8);
+  };
 
   const filteredProducts = useMemo(() => {
     return products.filter((item) => {
@@ -45,6 +56,10 @@ export const ProductsShowcase: React.FC<ProductsShowcaseProps> = ({
       return matchCategory && matchSearch;
     });
   }, [products, selectedCategory, searchQuery]);
+
+  const displayedProducts = useMemo(() => {
+    return filteredProducts.slice(0, visibleCount);
+  }, [filteredProducts, visibleCount]);
 
   const defaultMessenger = `https://m.me/${settings.facebookMessengerId || 'chiangyuencoop'}`;
 
@@ -81,7 +96,7 @@ export const ProductsShowcase: React.FC<ProductsShowcaseProps> = ({
             {categories.map((cat) => (
               <button
                 key={cat.id}
-                onClick={() => setSelectedCategory(cat.id)}
+                onClick={() => handleCategoryChange(cat.id)}
                 className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-medium transition-all ${
                   selectedCategory === cat.id
                     ? 'bg-[#005B35] text-white shadow-sm'
@@ -99,7 +114,7 @@ export const ProductsShowcase: React.FC<ProductsShowcaseProps> = ({
             <input
               type="text"
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={(e) => handleSearchChange(e.target.value)}
               placeholder="ค้นหาชื่อสินค้า ข้าว ปุ๋ย..."
               className="w-full pl-10 pr-4 py-2 text-sm bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#005B35] focus:bg-white transition-all"
             />
@@ -114,95 +129,111 @@ export const ProductsShowcase: React.FC<ProductsShowcaseProps> = ({
             <p className="text-gray-400 text-xs mt-1">ลองเปลี่ยนคำค้นหา หรือเลือกหมวดหมู่อื่น</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {filteredProducts.map((product) => {
-              const orderLink = getOrderLink(product);
-              return (
-                <div
-                  key={product.id}
-                  className="bg-white rounded-2xl overflow-hidden border border-gray-200/90 shadow-sm hover:shadow-md hover:border-emerald-300 transition-all flex flex-col group"
-                >
-                  {/* Product Image */}
-                  <div className="relative aspect-4/3 overflow-hidden bg-gray-100">
-                    <img
-                      src={product.imageUrl}
-                      alt={product.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      loading="lazy"
-                    />
+          <>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {displayedProducts.map((product) => {
+                const orderLink = getOrderLink(product);
+                return (
+                  <div
+                    key={product.id}
+                    className="bg-white rounded-2xl overflow-hidden border border-gray-200/90 shadow-sm hover:shadow-md hover:border-emerald-300 transition-all flex flex-col group"
+                  >
+                    {/* Product Image */}
+                    <div className="relative aspect-4/3 overflow-hidden bg-gray-100">
+                      <img
+                        src={product.imageUrl}
+                        alt={product.name}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        loading="lazy"
+                      />
 
-                    {/* Stock Status Tag */}
-                    <div className="absolute top-2.5 left-2.5">
-                      {product.inStock ? (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-600/90 text-white backdrop-blur-sm shadow-sm">
-                          <CheckCircle className="w-3 h-3" /> มีสินค้าพร้อมจำหน่าย
-                        </span>
-                      ) : (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-stone-600/90 text-white backdrop-blur-sm shadow-sm">
-                          <XCircle className="w-3 h-3" /> สินค้าหมดชั่วคราว
-                        </span>
-                      )}
-                    </div>
-
-                    {/* Quick Preview Button */}
-                    <button
-                      onClick={() => setSelectedProduct(product)}
-                      className="absolute bottom-2.5 right-2.5 p-2 rounded-xl bg-white/90 text-gray-700 hover:text-[#005B35] hover:bg-white shadow-sm transition-all opacity-0 group-hover:opacity-100"
-                      title="ดูรายละเอียดสินค้า"
-                    >
-                      <Eye className="w-4 h-4" />
-                    </button>
-                  </div>
-
-                  {/* Product Info */}
-                  <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between">
-                    <div>
-                      <div className="flex items-center gap-1.5 text-xs text-amber-700 font-semibold mb-1.5">
-                        <Tag className="w-3 h-3 text-[#D4AF37]" />
-                        <span>{product.categoryName}</span>
-                      </div>
-
-                      <h3
-                        onClick={() => setSelectedProduct(product)}
-                        className="font-bold text-base text-gray-900 group-hover:text-[#005B35] transition-colors cursor-pointer line-clamp-2"
-                      >
-                        {product.name}
-                      </h3>
-
-                      <p className="text-xs text-gray-500 mt-2 line-clamp-2 leading-relaxed">
-                        {product.description}
-                      </p>
-                    </div>
-
-                    <div className="mt-5 pt-3.5 border-t border-gray-100">
-                      {/* Price & Unit */}
-                      <div className="flex items-baseline justify-between mb-3">
-                        <div className="text-xs text-gray-500 font-medium">ราคาจำหน่าย</div>
-                        <div className="text-right">
-                          <span className="text-xl font-extrabold text-[#005B35]">
-                            ฿{product.price.toLocaleString()}
+                      {/* Stock Status Tag */}
+                      <div className="absolute top-2.5 left-2.5">
+                        {product.inStock ? (
+                          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-600/90 text-white backdrop-blur-sm shadow-sm">
+                            <CheckCircle className="w-3 h-3" /> มีสินค้าพร้อมจำหน่าย
                           </span>
-                          <span className="text-xs text-gray-500 ml-1">/ {product.unit}</span>
-                        </div>
+                        ) : (
+                          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-stone-600/90 text-white backdrop-blur-sm shadow-sm">
+                            <XCircle className="w-3 h-3" /> สินค้าหมดชั่วคราว
+                          </span>
+                        )}
                       </div>
 
-                      {/* CTA Facebook Order Button */}
-                      <a
-                        href={orderLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-[#005B35] hover:bg-[#004527] text-white text-xs sm:text-sm font-semibold shadow-sm transition-all hover:shadow group/btn"
+                      {/* Quick Preview Button */}
+                      <button
+                        onClick={() => setSelectedProduct(product)}
+                        className="absolute bottom-2.5 right-2.5 p-2 rounded-xl bg-white/90 text-gray-700 hover:text-[#005B35] hover:bg-white shadow-sm transition-all opacity-0 group-hover:opacity-100"
+                        title="ดูรายละเอียดสินค้า"
                       >
-                        <MessageCircle className="w-4 h-4 text-[#D4AF37]" />
-                        <span>สั่งซื้อผ่าน Facebook</span>
-                        <ExternalLink className="w-3.5 h-3.5 text-emerald-200 group-hover/btn:translate-x-0.5 transition-transform" />
-                      </a>
+                        <Eye className="w-4 h-4" />
+                      </button>
+                    </div>
+
+                    {/* Product Info */}
+                    <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between">
+                      <div>
+                        <div className="flex items-center gap-1.5 text-xs text-amber-700 font-semibold mb-1.5">
+                          <Tag className="w-3 h-3 text-[#D4AF37]" />
+                          <span>{product.categoryName}</span>
+                        </div>
+
+                        <h3
+                          onClick={() => setSelectedProduct(product)}
+                          className="font-bold text-base text-gray-900 group-hover:text-[#005B35] transition-colors cursor-pointer line-clamp-2"
+                        >
+                          {product.name}
+                        </h3>
+
+                        <p className="text-xs text-gray-500 mt-2 line-clamp-2 leading-relaxed">
+                          {product.description}
+                        </p>
+                      </div>
+
+                      <div className="mt-5 pt-3.5 border-t border-gray-100">
+                        {/* Price & Unit */}
+                        <div className="flex items-baseline justify-between mb-3">
+                          <div className="text-xs text-gray-500 font-medium">ราคาจำหน่าย</div>
+                          <div className="text-right">
+                            <span className="text-xl font-extrabold text-[#005B35]">
+                              ฿{product.price.toLocaleString()}
+                            </span>
+                            <span className="text-xs text-gray-500 ml-1">/ {product.unit}</span>
+                          </div>
+                        </div>
+
+                        {/* CTA Facebook Order Button */}
+                        <a
+                          href={orderLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-[#005B35] hover:bg-[#004527] text-white text-xs sm:text-sm font-semibold shadow-sm transition-all hover:shadow group/btn"
+                        >
+                          <MessageCircle className="w-4 h-4 text-[#D4AF37]" />
+                          <span>สั่งซื้อผ่าน Facebook</span>
+                          <ExternalLink className="w-3.5 h-3.5 text-emerald-200 group-hover/btn:translate-x-0.5 transition-transform" />
+                        </a>
+                      </div>
                     </div>
                   </div>
-                </div>
-              );
-            })}
-          </div>
+                );
+              })}
+            </div>
+
+            {/* Load More Button: shows when items exceed visibleCount */}
+            {filteredProducts.length > visibleCount && (
+              <div className="mt-12 text-center animate-in fade-in duration-300">
+                <button
+                  type="button"
+                  onClick={() => setVisibleCount(filteredProducts.length)}
+                  className="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-2xl bg-[#005B35] hover:bg-[#004527] text-white font-bold text-sm sm:text-base shadow-md hover:shadow-xl transition-all hover:scale-105 active:scale-95 group border-2 border-[#D4AF37]"
+                >
+                  <span>ดูเพิ่มเติม ({filteredProducts.length - visibleCount} รายการที่เหลือ)</span>
+                  <ChevronDown className="w-5 h-5 text-[#D4AF37] group-hover:translate-y-1 transition-transform" />
+                </button>
+              </div>
+            )}
+          </>
         )}
 
         {/* Product Detail Modal */}
