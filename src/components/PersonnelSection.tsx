@@ -1,6 +1,6 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Personnel } from '../types';
-import { Users, Search, Award, Briefcase, Shield } from 'lucide-react';
+import { Users, Search, Award, Briefcase, Shield, X, ZoomIn } from 'lucide-react';
 
 interface PersonnelSectionProps {
   personnel: Personnel[];
@@ -66,6 +66,24 @@ export const PersonnelAvatar: React.FC<{
 export const PersonnelSection: React.FC<PersonnelSectionProps> = ({ personnel = [] }) => {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [departmentFilter, setDepartmentFilter] = useState<string>('all');
+  const [selectedMember, setSelectedMember] = useState<Personnel | null>(null);
+
+  // ปิด Modal ด้วยปุ่ม Escape และจัดการ scroll ของ body
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setSelectedMember(null);
+      }
+    };
+    if (selectedMember) {
+      window.addEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = 'hidden';
+    }
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = '';
+    };
+  }, [selectedMember]);
 
   // กรองข้อมูลด้วยคำค้นหา
   const searchedPersonnel = useMemo(() => {
@@ -214,7 +232,11 @@ export const PersonnelSection: React.FC<PersonnelSectionProps> = ({ personnel = 
                     .map((p) => (
                       <div
                         key={p.id}
-                        className="bg-amber-50/40 rounded-2xl p-5 border-2 border-amber-400 text-center w-full max-w-xs shadow-xs"
+                        onClick={() => setSelectedMember(p)}
+                        className="bg-amber-50/40 rounded-2xl p-5 border-2 border-amber-400 text-center w-full max-w-xs shadow-xs cursor-pointer hover:shadow-lg hover:scale-105 hover:border-amber-500 transition-all duration-300 group"
+                        title="คลิกเพื่อดูรูปภาพขนาดใหญ่"
+                        role="button"
+                        tabIndex={0}
                       >
                         <PersonnelAvatar
                           imageUrl={p.imageUrl}
@@ -222,7 +244,7 @@ export const PersonnelSection: React.FC<PersonnelSectionProps> = ({ personnel = 
                           category="committee"
                           sizeClassName="w-20 h-20 mb-3"
                         />
-                        <h4 className="font-bold text-base text-[#005B35]">{p.name}</h4>
+                        <h4 className="font-bold text-base text-[#005B35] group-hover:text-emerald-800 transition-colors">{p.name}</h4>
                         <p className="text-xs font-bold text-amber-800 mt-1">{p.position}</p>
                       </div>
                     ))}
@@ -235,7 +257,11 @@ export const PersonnelSection: React.FC<PersonnelSectionProps> = ({ personnel = 
                     .map((p) => (
                       <div
                         key={p.id}
-                        className="bg-white rounded-2xl p-4 border border-amber-200 text-center w-48 sm:w-56 shadow-2xs"
+                        onClick={() => setSelectedMember(p)}
+                        className="bg-white rounded-2xl p-4 border border-amber-200 text-center w-48 sm:w-56 shadow-2xs cursor-pointer hover:shadow-lg hover:scale-105 hover:border-amber-400 transition-all duration-300 group"
+                        title="คลิกเพื่อดูรูปภาพขนาดใหญ่"
+                        role="button"
+                        tabIndex={0}
                       >
                         <PersonnelAvatar
                           imageUrl={p.imageUrl}
@@ -243,7 +269,7 @@ export const PersonnelSection: React.FC<PersonnelSectionProps> = ({ personnel = 
                           category="committee"
                           sizeClassName="w-16 h-16 sm:w-18 sm:h-18 mb-2"
                         />
-                        <h4 className="font-bold text-xs sm:text-sm text-gray-900">{p.name}</h4>
+                        <h4 className="font-bold text-xs sm:text-sm text-gray-900 group-hover:text-[#005B35] transition-colors">{p.name}</h4>
                         <p className="text-xs text-amber-700 font-medium mt-0.5">{p.position}</p>
                       </div>
                     ))}
@@ -260,7 +286,11 @@ export const PersonnelSection: React.FC<PersonnelSectionProps> = ({ personnel = 
                       .map((p) => (
                         <div
                           key={p.id}
-                          className="bg-gray-50/80 rounded-xl p-3 border border-gray-200 text-center"
+                          onClick={() => setSelectedMember(p)}
+                          className="bg-gray-50/80 rounded-xl p-3 border border-gray-200 text-center cursor-pointer hover:shadow-md hover:scale-105 hover:bg-amber-50/30 hover:border-amber-300 transition-all duration-300 group"
+                          title="คลิกเพื่อดูรูปภาพขนาดใหญ่"
+                          role="button"
+                          tabIndex={0}
                         >
                           <PersonnelAvatar
                             imageUrl={p.imageUrl}
@@ -268,7 +298,7 @@ export const PersonnelSection: React.FC<PersonnelSectionProps> = ({ personnel = 
                             category="committee"
                             sizeClassName="w-14 h-14 mb-2"
                           />
-                          <h4 className="font-semibold text-xs text-gray-800">{p.name}</h4>
+                          <h4 className="font-semibold text-xs text-gray-800 group-hover:text-[#005B35] transition-colors">{p.name}</h4>
                           <p className="text-[11px] text-gray-500 mt-0.5">{p.position}</p>
                         </div>
                       ))}
@@ -286,7 +316,11 @@ export const PersonnelSection: React.FC<PersonnelSectionProps> = ({ personnel = 
                       .map((p) => (
                         <div
                           key={p.id}
-                          className="bg-amber-50/30 rounded-xl p-3.5 border border-amber-200 text-center w-48"
+                          onClick={() => setSelectedMember(p)}
+                          className="bg-amber-50/30 rounded-xl p-3.5 border border-amber-200 text-center w-48 cursor-pointer hover:shadow-lg hover:scale-105 hover:border-amber-400 transition-all duration-300 group"
+                          title="คลิกเพื่อดูรูปภาพขนาดใหญ่"
+                          role="button"
+                          tabIndex={0}
                         >
                           <PersonnelAvatar
                             imageUrl={p.imageUrl}
@@ -294,7 +328,7 @@ export const PersonnelSection: React.FC<PersonnelSectionProps> = ({ personnel = 
                             category="committee"
                             sizeClassName="w-16 h-16 mb-2"
                           />
-                          <h4 className="font-bold text-xs text-[#005B35]">{p.name}</h4>
+                          <h4 className="font-bold text-xs text-[#005B35] group-hover:text-emerald-800 transition-colors">{p.name}</h4>
                           <p className="text-[11px] text-amber-700 font-medium mt-0.5">{p.position}</p>
                         </div>
                       ))}
@@ -318,7 +352,11 @@ export const PersonnelSection: React.FC<PersonnelSectionProps> = ({ personnel = 
               {executiveMembers.map((exec) => (
                 <div
                   key={exec.id}
-                  className="bg-emerald-50/30 rounded-2xl p-5 border-2 border-emerald-500 text-center w-full max-w-sm shadow-xs"
+                  onClick={() => setSelectedMember(exec)}
+                  className="bg-emerald-50/30 rounded-2xl p-5 border-2 border-emerald-500 text-center w-full max-w-sm shadow-xs cursor-pointer hover:shadow-lg hover:scale-105 hover:border-emerald-600 transition-all duration-300 group"
+                  title="คลิกเพื่อดูรูปภาพขนาดใหญ่"
+                  role="button"
+                  tabIndex={0}
                 >
                   <PersonnelAvatar
                     imageUrl={exec.imageUrl}
@@ -326,7 +364,7 @@ export const PersonnelSection: React.FC<PersonnelSectionProps> = ({ personnel = 
                     category="executive"
                     sizeClassName="w-20 h-20 mb-3"
                   />
-                  <h4 className="font-bold text-base text-[#005B35]">{exec.name}</h4>
+                  <h4 className="font-bold text-base text-[#005B35] group-hover:text-emerald-900 transition-colors">{exec.name}</h4>
                   <p className="text-xs font-bold text-amber-700 mt-1">{exec.position}</p>
                 </div>
               ))}
@@ -367,7 +405,11 @@ export const PersonnelSection: React.FC<PersonnelSectionProps> = ({ personnel = 
                           {group.heads.map((p) => (
                             <div
                               key={p.id}
-                              className="bg-white rounded-xl p-4 border border-emerald-300 shadow-2xs flex items-center gap-3"
+                              onClick={() => setSelectedMember(p)}
+                              className="bg-white rounded-xl p-4 border border-emerald-300 shadow-2xs flex items-center gap-3 cursor-pointer hover:shadow-lg hover:scale-105 hover:border-emerald-500 transition-all duration-300 group"
+                              title="คลิกเพื่อดูรูปภาพขนาดใหญ่"
+                              role="button"
+                              tabIndex={0}
                             >
                               <PersonnelAvatar
                                 imageUrl={p.imageUrl}
@@ -376,7 +418,7 @@ export const PersonnelSection: React.FC<PersonnelSectionProps> = ({ personnel = 
                                 sizeClassName="w-14 h-14"
                               />
                               <div className="text-left">
-                                <h5 className="font-bold text-xs text-gray-900">{p.name}</h5>
+                                <h5 className="font-bold text-xs text-gray-900 group-hover:text-[#005B35] transition-colors">{p.name}</h5>
                                 <p className="text-[11px] font-semibold text-emerald-700 mt-0.5">
                                   {p.position}
                                 </p>
@@ -397,7 +439,11 @@ export const PersonnelSection: React.FC<PersonnelSectionProps> = ({ personnel = 
                           {group.members.map((p) => (
                             <div
                               key={p.id}
-                              className="bg-white rounded-xl p-3 border border-gray-200 text-center"
+                              onClick={() => setSelectedMember(p)}
+                              className="bg-white rounded-xl p-3 border border-gray-200 text-center cursor-pointer hover:shadow-md hover:scale-105 hover:border-emerald-400 hover:bg-emerald-50/20 transition-all duration-300 group"
+                              title="คลิกเพื่อดูรูปภาพขนาดใหญ่"
+                              role="button"
+                              tabIndex={0}
                             >
                               <PersonnelAvatar
                                 imageUrl={p.imageUrl}
@@ -405,7 +451,7 @@ export const PersonnelSection: React.FC<PersonnelSectionProps> = ({ personnel = 
                                 category="staff"
                                 sizeClassName="w-14 h-14 mb-2"
                               />
-                              <h5 className="font-medium text-xs text-gray-800 leading-tight">
+                              <h5 className="font-medium text-xs text-gray-800 leading-tight group-hover:text-[#005B35] transition-colors">
                                 {p.name}
                               </h5>
                               <p className="text-[10px] text-gray-500 mt-1">{p.position}</p>
@@ -422,6 +468,70 @@ export const PersonnelSection: React.FC<PersonnelSectionProps> = ({ personnel = 
 
         </div>
       </div>
+
+      {/* LIGHTBOX / MODAL ขยายดูรูปภาพขนาดใหญ่ */}
+      {selectedMember && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200"
+          onClick={() => setSelectedMember(null)}
+          role="dialog"
+          aria-modal="true"
+        >
+          <div
+            className="relative bg-white rounded-3xl max-w-sm sm:max-w-md w-full overflow-hidden shadow-2xl border border-gray-100 flex flex-col items-center p-6 sm:p-8 animate-in zoom-in-95 duration-200 text-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* ปุ่มปิด (X) ที่มุมขวาบน */}
+            <button
+              type="button"
+              onClick={() => setSelectedMember(null)}
+              className="absolute top-4 right-4 p-2.5 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 hover:text-black transition-colors shadow-xs z-10 cursor-pointer"
+              title="ปิดหน้าต่าง (Esc)"
+              aria-label="ปิด"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            {/* รูปภาพขนาดใหญ่ตรงกลาง */}
+            <div className="relative w-60 h-60 sm:w-72 sm:h-72 rounded-2xl overflow-hidden shadow-md border-4 border-emerald-600/20 mb-6 bg-slate-100 shrink-0 flex items-center justify-center">
+              {selectedMember.imageUrl ? (
+                <img
+                  src={selectedMember.imageUrl}
+                  alt={selectedMember.name}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-emerald-50 via-teal-50 to-amber-50 text-[#005B35]">
+                  <Users className="w-20 h-20 text-[#005B35]/50 mb-2" />
+                  <span className="text-xs font-semibold text-emerald-800">ไม่มีรูปภาพโปรไฟล์</span>
+                </div>
+              )}
+            </div>
+
+            {/* ฝ่ายงาน / กลุ่มงาน (ถ้ามี) */}
+            {selectedMember.department && (
+              <span className="inline-block px-3.5 py-1 rounded-full text-xs font-bold bg-emerald-50 text-[#005B35] border border-emerald-200 mb-2.5">
+                {selectedMember.department}
+              </span>
+            )}
+
+            {/* ชื่อ-นามสกุล ด้วยตัวหนังสือขนาดใหญ่ อ่านได้ชัดเจน */}
+            <h3 className="text-xl sm:text-2xl font-black text-gray-900 leading-snug">
+              {selectedMember.name}
+            </h3>
+
+            {/* ตำแหน่ง ด้วยตัวหนังสือขนาดใหญ่ อ่านได้ชัดเจน */}
+            <p className="text-base sm:text-lg font-bold text-amber-700 mt-1.5 leading-normal">
+              {selectedMember.position}
+            </p>
+
+            {/* คำแนะนำ */}
+            <p className="text-[11px] text-gray-400 mt-5">
+              กดปุ่ม X หรือคลิกบริเวณสีดำรอบๆ เพื่อปิด
+            </p>
+          </div>
+        </div>
+      )}
     </section>
   );
 };

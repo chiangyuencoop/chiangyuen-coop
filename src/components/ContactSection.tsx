@@ -36,8 +36,14 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ settings }) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name.trim() || !formData.phone.trim() || !formData.message.trim()) {
-      setError('กรุณากรอกชื่อ หมายเลขโทรศัพท์ และข้อความให้ครบถ้วน');
+
+    // ตรวจสอบเฉพาะฟิลด์บังคับที่มีเครื่องหมายดอกจัน (*)
+    const name = formData.name.trim();
+    const phone = formData.phone.trim();
+    const message = formData.message.trim();
+
+    if (!name || !phone || !message) {
+      setError('กรุณากรอกชื่อ - นามสกุล, หมายเลขโทรศัพท์ติดต่อ และข้อความรายละเอียดให้ครบถ้วน');
       return;
     }
 
@@ -45,12 +51,12 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ settings }) => {
     setError(null);
     try {
       await submitInquiry({
-        name: formData.name.trim(),
-        phone: formData.phone.trim(),
+        name,
+        phone,
         email: formData.email.trim() || undefined,
         memberId: formData.memberId.trim() || undefined,
         subject: formData.subject.trim() || 'ติดต่อสอบถามทั่วไป',
-        message: formData.message.trim(),
+        message,
       });
       setSuccess(true);
       setFormData({
@@ -58,7 +64,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ settings }) => {
         phone: '',
         email: '',
         memberId: '',
-        subject: '',
+        subject: 'ติดต่อสอบถามทั่วไป',
         message: '',
       });
       setTimeout(() => setSuccess(false), 8000);
@@ -271,7 +277,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ settings }) => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-xs font-semibold text-gray-700 mb-1.5">
-                      อีเมล (ถ้ามี)
+                      อีเมล (ถ้ามี) <span className="text-red-500">*</span>
                     </label>
                     <input
                       type="email"
@@ -285,7 +291,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ settings }) => {
 
                   <div>
                     <label className="block text-xs font-semibold text-gray-700 mb-1.5">
-                      เลขทะเบียนสมาชิก (กรณีเป็นสมาชิก)
+                      เลขทะเบียนสมาชิก (กรณีเป็นสมาชิก) <span className="text-red-500">*</span>
                     </label>
                     <input
                       type="text"
