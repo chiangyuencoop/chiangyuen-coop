@@ -554,10 +554,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
               </button>
             </form>
 
-            <div className="mt-6 pt-4 border-t border-gray-100 text-xs text-gray-400">
-              <span>บัญชีทดสอบระบบ: </span>
-              <strong className="text-gray-600">admin@chiangyuen-coop.com / admin1234</strong>
-            </div>
+          
           </div>
         ) : (
           /* LOGGED IN: TABBED ADMIN INTERFACE */
