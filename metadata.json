@@ -1,0 +1,6 @@
+{
+  "name": "สหกรณ์การเกษตรเชียงยืน จำกัด - Chiang Yuen Agricultural Cooperative",
+  "description": "เว็บไซต์ทางการและระบบจัดการ สหกรณ์การเกษตรเชียงยืน จำกัด อำเภอเชียงยืน จังหวัดมหาสารคาม เคียงข้างเกษตรกร มุ่งมั่นพัฒนา สร้างสรรค์ความยั่งยืน",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

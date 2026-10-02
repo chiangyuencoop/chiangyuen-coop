@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: 'Prompt', 'Sarabun', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  }
+}
+
+:root {
+  --coop-green: #005B35;
+  --coop-green-light: #007645;
+  --coop-green-dark: #004527;
+  --coop-gold: #D4AF37;
+  --coop-gold-light: #F3E5AB;
+}
