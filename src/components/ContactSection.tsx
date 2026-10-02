@@ -11,6 +11,7 @@ import {
   ExternalLink,
   CheckCircle2,
   AlertCircle,
+  Loader2,
 } from 'lucide-react';
 
 interface ContactSectionProps {
@@ -214,11 +215,15 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ settings }) => {
               </div>
 
               {success && (
-                <div className="mb-6 p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 flex items-start gap-3 animate-in fade-in">
-                  <CheckCircle2 className="w-5 h-5 text-[#005B35] shrink-0 mt-0.5" />
-                  <div className="text-xs sm:text-sm">
-                    <div className="font-bold">ส่งข้อความเรียบร้อยแล้ว!</div>
-                    <div>เจ้าหน้าที่สหกรณ์การเกษตรเชียงยืน จำกัด ได้รับข้อมูลแล้วและจะติดต่อกลับโดยเร็วที่สุด ขอบพระคุณครับ</div>
+                <div className="mb-6 p-4 sm:p-5 rounded-2xl bg-emerald-50 border-2 border-emerald-300 text-emerald-900 flex items-start gap-3.5 shadow-sm animate-in fade-in slide-in-from-top-2 duration-300">
+                  <div className="p-2 rounded-xl bg-emerald-100 text-[#005B35] shrink-0 mt-0.5 shadow-2xs">
+                    <CheckCircle2 className="w-5 h-5" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="font-extrabold text-base text-[#005B35]">ส่งข้อมูลสำเร็จ!</div>
+                    <div className="text-xs sm:text-sm text-emerald-800 mt-1 leading-relaxed">
+                      เจ้าหน้าที่ได้รับข้อความของท่านแล้ว และจะติดต่อกลับโดยเร็วที่สุด
+                    </div>
                   </div>
                 </div>
               )}
@@ -239,10 +244,11 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ settings }) => {
                     <input
                       type="text"
                       required
+                      disabled={submitting}
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                       placeholder="นายสมชาย ใจดี"
-                      className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#005B35]"
+                      className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#005B35] disabled:bg-gray-100 disabled:cursor-not-allowed"
                     />
                   </div>
 
@@ -253,10 +259,11 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ settings }) => {
                     <input
                       type="tel"
                       required
+                      disabled={submitting}
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                       placeholder="081-234-5678"
-                      className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#005B35]"
+                      className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#005B35] disabled:bg-gray-100 disabled:cursor-not-allowed"
                     />
                   </div>
                 </div>
@@ -268,10 +275,11 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ settings }) => {
                     </label>
                     <input
                       type="email"
+                      disabled={submitting}
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                       placeholder="example@mail.com"
-                      className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#005B35]"
+                      className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#005B35] disabled:bg-gray-100 disabled:cursor-not-allowed"
                     />
                   </div>
 
@@ -281,10 +289,11 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ settings }) => {
                     </label>
                     <input
                       type="text"
+                      disabled={submitting}
                       value={formData.memberId}
                       onChange={(e) => setFormData({ ...formData, memberId: e.target.value })}
                       placeholder="เช่น 04567 (ถ้ามี)"
-                      className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#005B35]"
+                      className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#005B35] disabled:bg-gray-100 disabled:cursor-not-allowed"
                     />
                   </div>
                 </div>
@@ -294,9 +303,10 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ settings }) => {
                     เรื่องที่ต้องการติดต่อ / บริการที่สนใจ
                   </label>
                   <select
+                    disabled={submitting}
                     value={formData.subject}
                     onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                    className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#005B35]"
+                    className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#005B35] disabled:bg-gray-100 disabled:cursor-not-allowed"
                   >
                     <option value="ติดต่อสอบถามทั่วไป">ติดต่อสอบถามทั่วไป</option>
                     <option value="บริการสินเชื่อและเงินฝาก">บริการสินเชื่อและเงินฝาก</option>
@@ -314,20 +324,30 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ settings }) => {
                   <textarea
                     rows={4}
                     required
+                    disabled={submitting}
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                     placeholder="พิมพ์รายละเอียดที่ต้องการสอบถามหรือเสนอแนะ..."
-                    className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#005B35]"
+                    className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#005B35] disabled:bg-gray-100 disabled:cursor-not-allowed"
                   />
                 </div>
 
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl bg-[#005B35] hover:bg-[#004527] text-white font-bold text-sm shadow-md transition-all hover:scale-105 disabled:opacity-50"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl bg-[#005B35] hover:bg-[#004527] text-white font-bold text-sm shadow-md transition-all hover:scale-105 active:scale-95 disabled:bg-gray-400 disabled:cursor-not-allowed disabled:scale-100 disabled:opacity-75"
                 >
-                  <Send className="w-4 h-4 text-[#D4AF37]" />
-                  <span>{submitting ? 'กำลังส่งข้อมูล...' : 'ส่งข้อความถึงสหกรณ์'}</span>
+                  {submitting ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin text-white" />
+                      <span>กำลังส่งข้อมูล...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-4 h-4 text-[#D4AF37]" />
+                      <span>ส่งข้อความถึงสหกรณ์</span>
+                    </>
+                  )}
                 </button>
               </form>
             </div>
