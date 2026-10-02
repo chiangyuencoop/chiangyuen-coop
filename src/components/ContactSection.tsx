@@ -96,7 +96,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ settings }) => {
               {/* Photo of headquarters building */}
               <div className="rounded-2xl overflow-hidden mb-6 border border-emerald-200/80 shadow-xs relative aspect-16/9 group bg-slate-900">
                 <img
-                  src="/office.jpg"
+                  src={`${import.meta.env.BASE_URL}office.jpg`}
                   alt="อาคารสำนักงานใหญ่ สหกรณ์การเกษตรเชียงยืน จำกัด"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />

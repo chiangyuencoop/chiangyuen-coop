@@ -27,7 +27,7 @@ export const CoopLogo: React.FC<CoopLogoProps> = ({
       >
         {!imgError ? (
           <img
-            src="/logo.png"
+            src={`${import.meta.env.BASE_URL}logo.png`}
             alt="ตราสหกรณ์การเกษตรเชียงยืน จำกัด"
             className="w-full h-full object-contain rounded-full"
             onError={() => setImgError(true)}
